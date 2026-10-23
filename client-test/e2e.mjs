@@ -151,7 +151,7 @@ const chatInfo = await evaluate(`(function(){
 expect('chat pane is docked right of the paper', chatInfo.pane, chatInfo.pane)
 expect('new paper starts with an empty dedicated chat', chatInfo.empty, chatInfo.empty)
 expect('composer invites a whole-paper question', chatInfo.placeholder.indexOf('问这篇论文') >= 0, chatInfo.placeholder)
-expect('one paper session is registered', !!chatInfo.paperKey, chatInfo.paperKey)
+expect('opening a paper does not create an empty session', !chatInfo.paperKey, chatInfo.paperKey)
 await shot('12-reader-chat.png')
 
 // Select text and make sure the selection survives at least 2s (the old
@@ -255,6 +255,8 @@ const second = await evaluate(`(function(){
 })()`)
 expect('new conversation adds a second session for the same paper', second.sessions === 2 && second.messages === 0, JSON.stringify(second))
 expect('session dropdown lists both sessions', second.options === 2, second.options)
+const labels = await evaluate("[...document.querySelectorAll('.zot-chat-select option')].map(function(o){return o.textContent.trim()})")
+expect('session labels stay distinct (对话 1 / 对话 2)', JSON.stringify(labels) === JSON.stringify(['对话 1', '对话 2']), labels.join(','))
 await shot('15-second-session.png')
 
 // Switch back to the first session: its history must return.
@@ -284,7 +286,7 @@ const secondPaper = await evaluate(`(function(){
   var m=JSON.parse(localStorage.getItem('dsh.zotero.paperChats.v1')||'{}');
   return { keys:Object.keys(m).length, empty:!!document.querySelector('.zot-chat-empty') }
 })()`)
-expect('a different paper gets its own empty session', secondPaper.keys >= 2 && secondPaper.empty, JSON.stringify(secondPaper))
+expect('a different paper starts with its own empty chat (no eager session)', secondPaper.empty && secondPaper.keys === 1, JSON.stringify(secondPaper))
 await shot('17-other-paper.png')
 
 console.log('E2E summary: ' + checks.filter((check) => check.ok).length + '/' + checks.length + ' checks passed')

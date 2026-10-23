@@ -230,12 +230,15 @@ that session's transcript and composer in place.
 ```
 
 - On paper open: validate the mapped sessions against
-  `sessions.list.getSnapshot().byId`; reuse the active one, or create a session
-  with `sessions.create({})`, rename it to `shortTitle(paper.title) + ' · 对话 N'`
-  through a temporary retain + `binding.session.rename(title)`, and persist the
-  mapping. Multiple sessions per paper are allowed; **新对话** creates another
-  one and switches to it. Never append to the DSH main conversation and never
-  call `layout.selectPanel(null)` on send.
+  `sessions.list.getSnapshot().byId` and reuse the active one. Do **not** create
+  an empty session merely because a paper was opened: the first send (or an
+  explicit **新对话**) creates a session with `sessions.create({})`, renames it to
+  `shortTitle(paper.title) + ' · 对话 N'` through a temporary retain +
+  `binding.session.rename(title)`, and persists the mapping. Multiple sessions
+  per paper are allowed; **新对话** creates another one and switches to it. Never
+  append to the DSH main conversation and never call `layout.selectPanel(null)`
+  on send. The session dropdown labels are index-based (`对话 N`) so duplicate or
+  stale stored titles can never show the same name for every session.
 - Bind the session for the transcript:
   ```js
   const ref = sessions.retain(sessionId, { source: 'zotero-chat' })

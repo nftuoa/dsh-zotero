@@ -13,8 +13,9 @@ A local [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) plug
 - **Paper reader** — open the attached PDF in a same-origin PDF.js reader embedded in the panel
   (continuous pages, real text layer, selection).
 - **Paper chat, docked right** — every paper has its own conversation pane on the right of the
-  reader. It never touches the user's main DSH conversation: opening a paper creates (or reuses) a
-  session for that paper, and asking sends into that session only.
+  reader. It never touches the user's main DSH conversation: the first question creates (or reuses) a
+  session for that paper, and asking sends into that session only. Merely opening a paper does not
+  create an empty session.
 - **Multiple sessions per paper** — **新对话** creates another session for the same paper and the
   header dropdown switches between them; each keeps its own transcript.
 - **Markdown + formulas** — assistant answers render headings, lists, code blocks and inline/display
@@ -65,7 +66,7 @@ install and enable it like any official bundle.
 1. Download the tarball from [GitHub Releases](https://github.com/nftuoa/dsh-zotero/releases) or
    build one (see [Packaging](#packaging)):
    ```
-   npm pack          # → dsh-zotero-1.0.0.tgz
+   npm pack          # → dsh-zotero-1.0.1.tgz
    ```
 2. In DSH: **Plugins → Add plugin** → choose *Install a third-party plugin* → enter the absolute
    tarball path (or a Git URL / package name).
@@ -75,7 +76,7 @@ install and enable it like any official bundle.
 ### B. From the CLI / profile
 
 ```bash
-dsh plugin --profile web add /absolute/path/dsh-zotero-1.0.0.tgz
+dsh plugin --profile web add /absolute/path/dsh-zotero-1.0.1.tgz
 ```
 
 Then add the bundle to the profile manifest (this is what the UI's *Enable now* does):
@@ -83,7 +84,7 @@ Then add the bundle to the profile manifest (this is what the UI's *Enable now* 
 ```jsonc
 // ~/.dsh/profiles/web/package.json
 {
-  "dependencies": { "@local/dsh-zotero": "file:/absolute/path/dsh-zotero-1.0.0.tgz" },
+  "dependencies": { "@local/dsh-zotero": "file:/absolute/path/dsh-zotero-1.0.1.tgz" },
   "dsh": { "profile": { "bundles": ["@deepseek-ai/dsh-base", "...", "@local/dsh-zotero"] } }
 }
 ```
@@ -162,7 +163,7 @@ list (or use **Plugins → Remove**), then refresh. The Zotero library is never 
 
 ```bash
 npm pack                 # tarball includes lib, assets, vendor, patch, README, LICENSE, icon
-tar -tzf dsh-zotero-1.0.0.tgz | head
+tar -tzf dsh-zotero-1.0.1.tgz | head
 ```
 
 `vendor/` lives **outside** `node_modules` (`vendor/pdfjs`, `vendor/katex`) because npm always
@@ -215,7 +216,7 @@ node test/host.test.mjs        # host data layer + routes (16 tests)
 node --test test/local-api.test.mjs test/write-routes.test.mjs
                                # local-API auth/writes + annotation/note routes (4 tests)
 node client-test/smoke.mjs     # client bundle + helpers + note sanitizer + progress (38 checks)
-node client-test/e2e.mjs <url> # live GUI: reader, chat, sessions, math (19 checks)
+node client-test/e2e.mjs <url> # live GUI: reader, chat, sessions, math (20 checks)
 ```
 
 Build/debug against an isolated profile instead of the live GUI:
