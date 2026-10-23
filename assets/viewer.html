@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zotero PDF</title>
+<!-- Vendored pdf.js viewer CSS (same-origin, served from /zotero/pdfjs/). -->
+<link rel="stylesheet" href="pdfjs/web/pdf_viewer.css">
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #3f4347;
+    color-scheme: light;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    font: 13px/1.45 system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  #toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+    padding: 5px 10px;
+    background: #2b2e31;
+    color: #e8e8e8;
+    user-select: none;
+  }
+  #toolbar .brand {
+    font-weight: 600;
+    letter-spacing: .02em;
+    color: #f0f0f0;
+  }
+  #toolbar .spacer { flex: 1 1 auto; }
+  #toolbar button {
+    border: 1px solid #555b60;
+    border-radius: 5px;
+    background: #3a3e42;
+    color: #e8e8e8;
+    font: inherit;
+    line-height: 1;
+    padding: 5px 9px;
+    cursor: pointer;
+  }
+  #toolbar button:hover { background: #4a4f54; }
+  #toolbar button:active { background: #565c62; }
+  #info { color: #b9bec4; white-space: nowrap; }
+  #pages {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 12px 48px;
+    overflow: auto;
+  }
+  .page {
+    position: relative;
+    flex: 0 0 auto;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .35);
+  }
+  .page canvas { display: block; }
+  .page .textLayer {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    line-height: 1;
+  }
+  #error {
+    display: none;
+    flex: 0 0 auto;
+    margin: 32px auto;
+    padding: 16px 20px;
+    max-width: 560px;
+    background: #fff;
+    color: #3c4043;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .3);
+    white-space: pre-wrap;
+  }
+  #error.show { display: block; }
+</style>
+</head>
+<body>
+<div id="toolbar">
+  <span class="brand">Zotero</span>
+  <span id="info">加载中…</span>
+  <span class="spacer"></span>
+  <button id="zoom-out" type="button" title="缩小">−</button>
+  <button id="zoom-in" type="button" title="放大">+</button>
+  <button id="zoom-fit" type="button" title="适合宽度">适合宽度</button>
+</div>
+<div id="pages"></div>
+<div id="error"></div>
+<script type="module" src="viewer.js"></script>
+</body>
+</html>

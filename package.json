@@ -1,0 +1,65 @@
+{
+  "name": "@local/dsh-zotero",
+  "version": "1.0.0",
+  "description": "Zotero library browser, PDF reader, and per-paper AI chat for the DeepSeek Harness web GUI",
+  "license": "MIT",
+  "type": "module",
+  "main": "lib/index.js",
+  "icon": "./icon.svg",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "zotero",
+    "pdf",
+    "research",
+    "plugin"
+  ],
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "assets",
+    "vendor",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE",
+    "icon.svg"
+  ],
+  "scripts": {
+    "test": "node test/host.test.mjs",
+    "test:client": "node client-test/smoke.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-renderer",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-sidebar",
+        "@deepseek-ai/dsh-api-session-controller",
+        "@deepseek-ai/dsh-client-ui-workspace",
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ]
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nftuoa/dsh-zotero.git"
+  },
+  "homepage": "https://github.com/nftuoa/dsh-zotero#readme",
+  "bugs": {
+    "url": "https://github.com/nftuoa/dsh-zotero/issues"
+  },
+  "author": "nftuoa"
+}
